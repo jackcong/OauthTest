@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"> 
+<title>菜鸟教程(runoob.com)</title> 
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+$(document).ready(function()
+{
+    var regurl="http://localhost:2602/api/account/register";
+    var tokenurl="http://localhost:2602/token";
+    var orderurl="http://localhost:2602/api/Orders";
+    var register={"userName": "Taiseer","password": "SuperPass","confirmPassword": "SuperPass"};
+    var gettoken={"grant_type":"password","username":"Taiseer","password":"SuperPass"};
+    $("button").click(function(){
+		$.ajax(
+            {
+                url:tokenurl,
+                type:"post",
+                data:gettoken,
+                success:function(result)
+                {
+
+                    $("#div1").html(result.access_token);
+
+                    $.ajax(
+            {
+                url:orderurl,
+                type:"get",
+                data:{},
+                headers:{'Content-Type':'application/json;charset=utf8','Authorization':result.token_type+' aa'+result.access_token},
+                success:function(myresult)
+                {
+
+                console.log(myresult);
+                }
+            });
+                }
+            });
+	});
+});
+</script>
+</head>
+<body>
+        <div id="div1"></div>
+        <button>获取其他内容</button>
+</body>
+</html>
